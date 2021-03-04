@@ -34,38 +34,58 @@ function funcion1(id){
             <p>Email: ${data[id-1].email}<p></a></p>
             <p>Phone: ${data[id-1].phone}<p></a></p>
             <p>Website: ${data[id-1].website}<p></a></p>
-            <input type ='button' value = 'posts' onclick="javascript:funcion2(${data[id-1].id})";"/>
+            <input type ='button' value = 'posts' onclick="javascript:post(${data[id-1].id})";"/>
             <input type ='button' value = 'todos' onclick="javascript:funcionTodos(${data[id-1].id})";"/>
             </h3></p>
             `;   
     })
 }
 
-function funcion2(id2){
-    console.log("funcionb")
 
-    const url1 = 'https://jsonplaceholder.typicode.com/users/'+id2+'/posts'
-   console.log(url1)
+function post(id2){
+    const url1='https://jsonplaceholder.typicode.com/users/'+id2+'/posts'
+    var id1 = new Array(10)
+    var tit = new Array(10)
+    var cue = new Array(10)
+    var com = new Array(10)
     fetch(url1)
     .then(response => response.json()) 
     .then(data =>{
-        
-        console.log(data)
-        console.log((id2-1)+i)
         let element = document.getElementById('n1')
-        var id1 = new Array(10)
         for(i=0;i<10; i++) {
-            
-            console.log(id2-1)
-                element.innerHTML += `
-                <p>Id de post ${data[(id2-id2)+i].id}<p></a></p>
-                <p>Titulo: ${data[(id2-id2)+i].title}<p></a></p>         
-                <p>Cuerpo: ${data[(id2-id2)+i].body}<p></a></p>     
-                `; 
-                funcion3(data[(id2-id2)+i].id)  
-            
+        id1[i]=data[(id2-id2)+i].id
+        tit[i]=data[(id2-id2)+i].title
+        cue[i]=data[(id2-id2)+i].body
+        const url4='https://jsonplaceholder.typicode.com/users/'+id1[i]+'/comments'
+       fetch(url4)
+        .then(response => response.json()) 
+        .then(data1 =>{
+            console.log(url4)
+            let element = document.getElementById('n1')
+            for(r=0;r<5;r++) {
+                com[r]=data1[r].body
+                
+            }
+            console.log(com)    
+        })
         }
+           
+        for(j=0;j<10;j++) {
+            
+            element.innerHTML += `
+            <p>ID DE POST${id1[j]}</p>
+            <p>TITULO ${tit[j]}</p>
+            <p>CUERPO ${cue[j]}</p>`;
+                for(t=0;t<5;t++) {  
+                    console.log(com)  
+                    element.innerHTML += `
+                    <p>COMENTARIOS ${com[t]}</p>`;
+                }   
+        } 
+                   
+      
     })
+   
 }
 
 
@@ -153,20 +173,3 @@ function funcionTodos(id3){ //Funcion para la peticion del boton Todos
         
 }
 
-
-function funcion3(it){
-    console.log("funcionb")
-    const url2 = 'https://jsonplaceholder.typicode.com/users/'+(it)+'/comments'
-    console.log(url2)
-            fetch(url2)
-            .then(response => response.json()) 
-            .then(data =>{
-                console.log(data)
-                let element = document.getElementById('n1')
-                    element.innerHTML += `
-                    <p>comentario: ${data[it].body}<p></a></p> 
-                  
-                    `;   
-                
-            })
-        }
